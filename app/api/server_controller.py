@@ -1,22 +1,32 @@
-from app import app
-from flask import Response
-from app.utilities import server_utilities
+from minecraft_server_app.app import app
+from flask import Response, jsonify
+from minecraft_server_app.app.utilities import server_utilities
 
-@app.route('/api/server_controller/turn_on')
+
+# todo: need to return an error/correct HTTP response code if errored.
+@app.route('/api/server_controller/turn_on', methods=['PUT'])
 def turn_on():
-    return
+    response = server_utilities.turn_on()
+    if response:
+        return Response('Server is on.', 200)
+    return Response('Server is either already on or errored.', 404)
 
 
-@app.route('/api/server_controller/turn_off')
-def turn_on():
-    return
+@app.route('/api/server_controller/turn_off', methods=['PUT'])
+def turn_off():
+    response = server_utilities.turn_off()
+    if response:
+        return Response('Server is off', 200)
+    return Response('Server is either already off or errored', 404)
 
 
-@app.route('/api/server_controller/who_is_on')
+@app.route('/api/server_controller/who_is_on', methods=['GET'])
 def who_is_on():
-    return
+    response = server_utilities.who_is_on()
+    return Response(jsonify(response), 200)
 
 
-@app.route('/api/server_controller/is_players')
+@app.route('/api/server_controller/is_players', methods=['GET'])
 def is_players():
-    return
+    response = server_utilities.is_players()
+    return Response(jsonify(response), 200)

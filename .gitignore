@@ -1,0 +1,12 @@
+# node modules
+app/react_app/node_modules
+
+# any and all logs
+**/logs
+*.log
+
+# IntelliJ
+*.iml
+*.idea
+
+
