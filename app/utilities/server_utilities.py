@@ -39,7 +39,7 @@ class ServerUtilities(object):
             # execute returns True if nothing went wrong.  Now get tail of log and find out if screen had any errors
             if execute:
                 log_tail = ServerUtilities.tail_screen_log(num_of_lines=1)
-                # do some regex search for value
+                # do some regex search for fail value
                 is_success = (not re.match('look for error syntax', log_tail, flags=re.IGNORECASE))
                 if is_success:
                     self._is_on = True

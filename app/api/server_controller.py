@@ -1,6 +1,6 @@
-from minecraft_server_app.app import app
+from app import app
 from flask import Response, jsonify
-from minecraft_server_app.app.utilities import server_utilities
+from app.utilities import server_utilities
 
 
 # todo: need to return an error/correct HTTP response code if errored.
