@@ -2,20 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+
 
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import { Homepage } from './homepage/components/homepage.js';
+import { NavBar } from './shared/navbar';
+import Homepage from './homepage/components/homepage.js';
 import reducers from './reducers';
+import rootSaga from './sagas/watchers';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const sagaMiddleware = createSagaMiddleware();
+const createStoreWithMiddleware = applyMiddleware(sagaMiddleware)(createStore);
+const reduxStore = createStoreWithMiddleware(reducers);
+sagaMiddleware.run(rootSaga)
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={reduxStore}>
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-        <Homepage />
+        <div>
+            <NavBar />
+            <Homepage />
+        </div>
       </MuiThemeProvider>
   </Provider>
   , document.querySelector('.container')

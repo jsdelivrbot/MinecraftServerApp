@@ -10,3 +10,4 @@ app/react_app/node_modules
 *.idea
 
 *.pyc
+*.txt
