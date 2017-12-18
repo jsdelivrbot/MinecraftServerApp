@@ -1,12 +1,15 @@
 import shlex
 import subprocess
 import re
+import io
+from interruptingcow import timeout
 
 
 class ServerUtilities(object):
     MC_SERVER_DIR = '/opt/server/minecraft'
     SCREEN_NAME = 'minecraft_server'
     SCREEN_LOG = 'screen_log'
+    MAX_RUNTIME = 30  # 30 seconds
 
     def __init__(self):
         self._is_on = False
@@ -38,7 +41,8 @@ class ServerUtilities(object):
 
             # execute returns True if nothing went wrong.  Now get tail of log and find out if screen had any errors
             if execute:
-                log_tail = ServerUtilities.tail_screen_log(num_of_lines=1)
+                log_tail = ServerUtilities.stream_tail_screen_log(num_of_lines=1)
+                # todo: Should remove this regex and put it in to another function ---> search_on_line()
                 # do some regex search for fail value
                 is_success = (not re.match('look for error syntax', log_tail, flags=re.IGNORECASE))
                 if is_success:
@@ -112,24 +116,35 @@ class ServerUtilities(object):
         return True
 
     @staticmethod
-    def tail_screen_log(num_of_lines=1):
+    def search_on_line():
         """
-        :param num_of_lines: (int) Fetch 'n' lines from tail of log
+        Probably need something like this inconjunction to stream_tail_screen_log()
         :return:
         """
-        command = 'tail -n {num_of_lines} {mc_server_dir}/{screen_log}'.format(
-            num_of_lines=num_of_lines,
-            mc_server_dir=ServerUtilities.MC_SERVER_DIR,
-            screen_log=ServerUtilities.SCREEN_LOG,
-        )
+        return
 
-        sh_command = shlex.split(command)
-        execute = subprocess.Popen(sh_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = execute.communicate()
-        if stderr:
-            print 'Error when fetching tail of screen log'
+    @staticmethod
+    def stream_tail_screen_log():
+        """
+        Streams tail of log file for a set period of time before timing out.
+        :return: Returns
+        """
+        try:
+            with io.open(file='{mc_server_dir}/{screen_log}'.format(
+                mc_server_dir=ServerUtilities.MC_SERVER_DIR,
+                screen_log=ServerUtilities.SCREEN_LOG
+            ),
+                mode='rt',
+            ) as log, timeout(ServerUtilities.MAX_RUNTIME, exception=RuntimeError) as streaming_timeout:
+                while True:
+                    # todo: do shit with lines from log.
+                    return True
+        except RuntimeError:
+            print('Run time was exceeded.')
             return False
-        return stdout
+        except Exception as error:
+            print('Other error in stream tail screen log', error)
+            return False
 
     @staticmethod
     def create_screen():

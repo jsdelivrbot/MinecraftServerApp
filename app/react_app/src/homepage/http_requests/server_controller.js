@@ -6,6 +6,7 @@ import axios from 'axios';
 
 //todo: Look into spread operations.
 export function turnServerOn(url=''){
+    console.log('AXIOS TURN SERVER ON HIT!!!')
     url += '/api/server_controller/turn_on'
     return (
         axios.put(url)

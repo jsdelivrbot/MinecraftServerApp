@@ -8918,11 +8918,11 @@
 
 	var _homepage2 = _interopRequireDefault(_homepage);
 
-	var _reducers = __webpack_require__(786);
+	var _reducers = __webpack_require__(788);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _watchers = __webpack_require__(789);
+	var _watchers = __webpack_require__(791);
 
 	var _watchers2 = _interopRequireDefault(_watchers);
 
@@ -45900,13 +45900,17 @@
 
 	var _reactRedux = __webpack_require__(486);
 
-	var _Card = __webpack_require__(740);
+	var _LinearProgress = __webpack_require__(740);
 
-	var _Toggle = __webpack_require__(752);
+	var _LinearProgress2 = _interopRequireDefault(_LinearProgress);
+
+	var _Card = __webpack_require__(742);
+
+	var _Toggle = __webpack_require__(754);
 
 	var _Toggle2 = _interopRequireDefault(_Toggle);
 
-	var _server_controller = __webpack_require__(757);
+	var _server_controller = __webpack_require__(759);
 
 	function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { default: obj };
@@ -45933,6 +45937,10 @@
 	//todo: Have shareable component for Server card status
 
 
+	var cardStyle = {
+	    width: "100%"
+	};
+
 	var Homepage = function (_Component) {
 	    _inherits(Homepage, _Component);
 
@@ -45944,6 +45952,7 @@
 	        console.log('Homepage props are ', _this.props.serverStatus);
 
 	        _this.onMinecraftServerToggle = _this.onMinecraftServerToggle.bind(_this);
+	        _this.getServerStatusIcon = _this.getServerStatusIcon.bind(_this);
 	        _this.toggled = false;
 	        _this.toggleStyle = {
 	            trackStyle: { color: 'red' }
@@ -45958,16 +45967,33 @@
 	            console.log('new props are', this.props);
 	        }
 	    }, {
+	        key: 'getServerStatusIcon',
+	        value: function getServerStatusIcon(serverStatus) {
+	            var check_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 15 15">\n        <path d="M6.61 11.89L3.5 8.78 2.44 9.84 6.61 14l8.95-8.95L14.5 4z"/></svg>';
+
+	            if (serverStatus.serverOn) {
+	                return check_icon;
+	            } else if (serverStatus.serverPending) {
+	                return "Pending...";
+	            } else {
+	                return 'SERVER OFF';
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(_Card.Card, null, _react2.default.createElement(_Card.CardHeader, {
-	                title: 'Minecraft Server Status'
-	            }), _react2.default.createElement(_Card.CardActions, null, '// todo: need to update check mark for when server is on... or change it out right. Looks kindof ugly.', _react2.default.createElement('div', null, 'Server Status On: ', _react2.default.createElement('svg', { xmlns: 'http://www.w3.org/2000/svg', width: '20', height: '20', viewBox: '0 0 15 15' }, _react2.default.createElement('path', { d: 'M6.61 11.89L3.5 8.78 2.44 9.84 6.61 14l8.95-8.95L14.5 4z' }))), _react2.default.createElement(_Toggle2.default, {
-	                label: 'Turn On Server',
-	                onToggle: this.onMinecraftServerToggle,
-	                trackSwitchedStyle: this.toggleStyle.trackStyle,
-	                toggled: this.props.serverOn
-	            })));
+	            return (
+	                // todo: need to move this div to something like a body component for other components
+	                _react2.default.createElement('div', { style: { width: '96vw', marginLeft: '2vw', marginTop: '10px' } }, _react2.default.createElement(_Card.Card, { style: cardStyle }, _react2.default.createElement(_Card.CardHeader, {
+	                    title: 'Minecraft Server Status',
+	                    style: {}
+	                }), _react2.default.createElement(_Card.CardActions, null, '// todo: need to update check mark for when server is on... or change it out right. Looks kindof ugly.', _react2.default.createElement('div', null, 'Server Status On: ', this.getServerStatusIcon(this.props.serverStatus)), _react2.default.createElement(_Toggle2.default, {
+	                    label: 'Turn On Server',
+	                    onToggle: this.onMinecraftServerToggle,
+	                    trackSwitchedStyle: this.toggleStyle.trackStyle,
+	                    toggled: this.props.serverOn
+	                }))))
+	            );
 	        }
 	    }]);
 
@@ -46002,33 +46028,290 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.default = undefined;
+
+	var _LinearProgress = __webpack_require__(741);
+
+	var _LinearProgress2 = _interopRequireDefault(_LinearProgress);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _LinearProgress2.default;
+
+/***/ }),
+/* 741 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends2 = __webpack_require__(697);
+
+	var _extends3 = _interopRequireDefault(_extends2);
+
+	var _objectWithoutProperties2 = __webpack_require__(702);
+
+	var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
+
+	var _getPrototypeOf = __webpack_require__(547);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(573);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(574);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(578);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(624);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _simpleAssign = __webpack_require__(703);
+
+	var _simpleAssign2 = _interopRequireDefault(_simpleAssign);
+
+	var _react = __webpack_require__(328);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(632);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _transitions = __webpack_require__(706);
+
+	var _transitions2 = _interopRequireDefault(_transitions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function getRelativeValue(value, min, max) {
+	  var clampedValue = Math.min(Math.max(min, value), max);
+	  var rangeValue = max - min;
+	  var relValue = Math.round((clampedValue - min) / rangeValue * 10000) / 10000;
+	  return relValue * 100;
+	}
+
+	function getStyles(props, context) {
+	  var max = props.max,
+	      min = props.min,
+	      value = props.value;
+	  var _context$muiTheme = context.muiTheme,
+	      palette = _context$muiTheme.baseTheme.palette,
+	      borderRadius = _context$muiTheme.borderRadius;
+
+
+	  var styles = {
+	    root: {
+	      position: 'relative',
+	      height: 4,
+	      display: 'block',
+	      width: '100%',
+	      backgroundColor: palette.primary3Color,
+	      borderRadius: borderRadius,
+	      margin: 0,
+	      overflow: 'hidden'
+	    },
+	    bar: {
+	      height: '100%'
+	    },
+	    barFragment1: {},
+	    barFragment2: {}
+	  };
+
+	  if (props.mode === 'indeterminate') {
+	    styles.barFragment1 = {
+	      position: 'absolute',
+	      backgroundColor: props.color || palette.primary1Color,
+	      top: 0,
+	      left: 0,
+	      bottom: 0,
+	      transition: _transitions2.default.create('all', '840ms', null, 'cubic-bezier(0.650, 0.815, 0.735, 0.395)')
+	    };
+
+	    styles.barFragment2 = {
+	      position: 'absolute',
+	      backgroundColor: props.color || palette.primary1Color,
+	      top: 0,
+	      left: 0,
+	      bottom: 0,
+	      transition: _transitions2.default.create('all', '840ms', null, 'cubic-bezier(0.165, 0.840, 0.440, 1.000)')
+	    };
+	  } else {
+	    styles.bar.backgroundColor = props.color || palette.primary1Color;
+	    styles.bar.transition = _transitions2.default.create('width', '.3s', null, 'linear');
+	    styles.bar.width = getRelativeValue(value, min, max) + '%';
+	  }
+
+	  return styles;
+	}
+
+	var LinearProgress = function (_Component) {
+	  (0, _inherits3.default)(LinearProgress, _Component);
+
+	  function LinearProgress() {
+	    (0, _classCallCheck3.default)(this, LinearProgress);
+	    return (0, _possibleConstructorReturn3.default)(this, (LinearProgress.__proto__ || (0, _getPrototypeOf2.default)(LinearProgress)).apply(this, arguments));
+	  }
+
+	  (0, _createClass3.default)(LinearProgress, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      this.timers = {};
+
+	      this.timers.bar1 = this.barUpdate('bar1', 0, this.refs.bar1, [[-35, 100], [100, -90]], 0);
+
+	      this.timers.bar2 = setTimeout(function () {
+	        _this2.barUpdate('bar2', 0, _this2.refs.bar2, [[-200, 100], [107, -8]], 0);
+	      }, 850);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearTimeout(this.timers.bar1);
+	      clearTimeout(this.timers.bar2);
+	    }
+	  }, {
+	    key: 'barUpdate',
+	    value: function barUpdate(id, step, barElement, stepValues, timeToNextStep) {
+	      var _this3 = this;
+
+	      if (this.props.mode !== 'indeterminate') return;
+
+	      timeToNextStep = timeToNextStep || 420;
+	      step = step || 0;
+	      step %= 4;
+
+	      var right = this.context.muiTheme.isRtl ? 'left' : 'right';
+	      var left = this.context.muiTheme.isRtl ? 'right' : 'left';
+
+	      if (step === 0) {
+	        barElement.style[left] = stepValues[0][0] + '%';
+	        barElement.style[right] = stepValues[0][1] + '%';
+	      } else if (step === 1) {
+	        barElement.style.transitionDuration = '840ms';
+	      } else if (step === 2) {
+	        barElement.style[left] = stepValues[1][0] + '%';
+	        barElement.style[right] = stepValues[1][1] + '%';
+	      } else if (step === 3) {
+	        barElement.style.transitionDuration = '0ms';
+	      }
+	      this.timers[id] = setTimeout(function () {
+	        return _this3.barUpdate(id, step + 1, barElement, stepValues);
+	      }, timeToNextStep);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          style = _props.style,
+	          other = (0, _objectWithoutProperties3.default)(_props, ['style']);
+	      var prepareStyles = this.context.muiTheme.prepareStyles;
+
+	      var styles = getStyles(this.props, this.context);
+
+	      return _react2.default.createElement(
+	        'div',
+	        (0, _extends3.default)({}, other, { style: prepareStyles((0, _simpleAssign2.default)(styles.root, style)) }),
+	        _react2.default.createElement(
+	          'div',
+	          { style: prepareStyles(styles.bar) },
+	          _react2.default.createElement('div', { ref: 'bar1', style: prepareStyles(styles.barFragment1) }),
+	          _react2.default.createElement('div', { ref: 'bar2', style: prepareStyles(styles.barFragment2) })
+	        )
+	      );
+	    }
+	  }]);
+	  return LinearProgress;
+	}(_react.Component);
+
+	LinearProgress.defaultProps = {
+	  mode: 'indeterminate',
+	  value: 0,
+	  min: 0,
+	  max: 100
+	};
+	LinearProgress.contextTypes = {
+	  muiTheme: _propTypes2.default.object.isRequired
+	};
+	LinearProgress.propTypes = process.env.NODE_ENV !== "production" ? {
+	  /**
+	   * The color of the progress bar, defaults to
+	   * primary color of theme.
+	   */
+	  color: _propTypes2.default.string,
+	  /**
+	   * The max value of progress, only works in determinate mode.
+	   */
+	  max: _propTypes2.default.number,
+	  /**
+	   * The min value of progress, only works in determinate mode.
+	   */
+	  min: _propTypes2.default.number,
+	  /**
+	   * The mode of show your progress, indeterminate for when
+	   * there is no value for progress.
+	   */
+	  mode: _propTypes2.default.oneOf(['determinate', 'indeterminate']),
+	  /**
+	   * Override the inline-styles of the root element.
+	   */
+	  style: _propTypes2.default.object,
+	  /**
+	   * The value of progress, only works in determinate mode.
+	   */
+	  value: _propTypes2.default.number
+	} : {};
+	exports.default = LinearProgress;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
+
+/***/ }),
+/* 742 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	exports.default = exports.CardExpandable = exports.CardActions = exports.CardText = exports.CardMedia = exports.CardTitle = exports.CardHeader = exports.Card = undefined;
 
-	var _Card2 = __webpack_require__(741);
+	var _Card2 = __webpack_require__(743);
 
 	var _Card3 = _interopRequireDefault(_Card2);
 
-	var _CardHeader2 = __webpack_require__(745);
+	var _CardHeader2 = __webpack_require__(747);
 
 	var _CardHeader3 = _interopRequireDefault(_CardHeader2);
 
-	var _CardTitle2 = __webpack_require__(748);
+	var _CardTitle2 = __webpack_require__(750);
 
 	var _CardTitle3 = _interopRequireDefault(_CardTitle2);
 
-	var _CardMedia2 = __webpack_require__(749);
+	var _CardMedia2 = __webpack_require__(751);
 
 	var _CardMedia3 = _interopRequireDefault(_CardMedia2);
 
-	var _CardText2 = __webpack_require__(750);
+	var _CardText2 = __webpack_require__(752);
 
 	var _CardText3 = _interopRequireDefault(_CardText2);
 
-	var _CardActions2 = __webpack_require__(751);
+	var _CardActions2 = __webpack_require__(753);
 
 	var _CardActions3 = _interopRequireDefault(_CardActions2);
 
-	var _CardExpandable2 = __webpack_require__(742);
+	var _CardExpandable2 = __webpack_require__(744);
 
 	var _CardExpandable3 = _interopRequireDefault(_CardExpandable2);
 
@@ -46044,7 +46327,7 @@
 	exports.default = _Card3.default;
 
 /***/ }),
-/* 741 */
+/* 743 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -46097,7 +46380,7 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _CardExpandable = __webpack_require__(742);
+	var _CardExpandable = __webpack_require__(744);
 
 	var _CardExpandable2 = _interopRequireDefault(_CardExpandable);
 
@@ -46269,7 +46552,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 742 */
+/* 744 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -46310,11 +46593,11 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _keyboardArrowUp = __webpack_require__(743);
+	var _keyboardArrowUp = __webpack_require__(745);
 
 	var _keyboardArrowUp2 = _interopRequireDefault(_keyboardArrowUp);
 
-	var _keyboardArrowDown = __webpack_require__(744);
+	var _keyboardArrowDown = __webpack_require__(746);
 
 	var _keyboardArrowDown2 = _interopRequireDefault(_keyboardArrowDown);
 
@@ -46382,7 +46665,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 743 */
+/* 745 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46419,7 +46702,7 @@
 	exports.default = HardwareKeyboardArrowUp;
 
 /***/ }),
-/* 744 */
+/* 746 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46456,7 +46739,7 @@
 	exports.default = HardwareKeyboardArrowDown;
 
 /***/ }),
-/* 745 */
+/* 747 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -46505,7 +46788,7 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _Avatar = __webpack_require__(746);
+	var _Avatar = __webpack_require__(748);
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
@@ -46692,7 +46975,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 746 */
+/* 748 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46702,7 +46985,7 @@
 	});
 	exports.default = undefined;
 
-	var _Avatar = __webpack_require__(747);
+	var _Avatar = __webpack_require__(749);
 
 	var _Avatar2 = _interopRequireDefault(_Avatar);
 
@@ -46711,7 +46994,7 @@
 	exports.default = _Avatar2.default;
 
 /***/ }),
-/* 747 */
+/* 749 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -46887,7 +47170,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 748 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47071,7 +47354,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 749 */
+/* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47292,7 +47575,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 750 */
+/* 752 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47419,7 +47702,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 751 */
+/* 753 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47551,7 +47834,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 752 */
+/* 754 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47561,7 +47844,7 @@
 	});
 	exports.default = undefined;
 
-	var _Toggle = __webpack_require__(753);
+	var _Toggle = __webpack_require__(755);
 
 	var _Toggle2 = _interopRequireDefault(_Toggle);
 
@@ -47570,7 +47853,7 @@
 	exports.default = _Toggle2.default;
 
 /***/ }),
-/* 753 */
+/* 755 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47627,7 +47910,7 @@
 
 	var _Paper2 = _interopRequireDefault(_Paper);
 
-	var _EnhancedSwitch = __webpack_require__(754);
+	var _EnhancedSwitch = __webpack_require__(756);
 
 	var _EnhancedSwitch2 = _interopRequireDefault(_EnhancedSwitch);
 
@@ -47909,7 +48192,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 754 */
+/* 756 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -47958,7 +48241,7 @@
 
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 
-	var _reactEventListener = __webpack_require__(755);
+	var _reactEventListener = __webpack_require__(757);
 
 	var _reactEventListener2 = _interopRequireDefault(_reactEventListener);
 
@@ -48379,7 +48662,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 755 */
+/* 757 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -48440,7 +48723,7 @@
 
 	var _warning2 = _interopRequireDefault(_warning);
 
-	var _supports = __webpack_require__(756);
+	var _supports = __webpack_require__(758);
 
 	var supports = _interopRequireWildcard(_supports);
 
@@ -48607,7 +48890,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 756 */
+/* 758 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48664,7 +48947,7 @@
 	}();
 
 /***/ }),
-/* 757 */
+/* 759 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48679,9 +48962,9 @@
 
 	var _effects = __webpack_require__(539);
 
-	var _server_controller = __webpack_require__(758);
+	var _server_controller = __webpack_require__(760);
 
-	var _server_controller2 = __webpack_require__(785);
+	var _server_controller2 = __webpack_require__(787);
 
 	var _marked = /*#__PURE__*/regeneratorRuntime.mark(turnOnServerSagas),
 	    _marked2 = /*#__PURE__*/regeneratorRuntime.mark(turnOffServerSagas),
@@ -48699,18 +48982,18 @@
 	                case 0:
 	                    _context.prev = 0;
 	                    _context.next = 3;
-	                    return (0, _effects.put)(_server_controller2.serverPending, true);
+	                    return (0, _effects.put)({ type: _server_controller2.MC_SERVER_PENDING, payload: true });
 
 	                case 3:
 	                    _context.next = 5;
-	                    return (0, _effects.call)(_server_controller2.serverOn);
+	                    return (0, _effects.call)(_server_controller.turnServerOn);
 
 	                case 5:
 	                    turnOnRequest = _context.sent;
 
 	                    console.log('Turning on server... ', turnOnRequest);
 
-	                    _context.next = 12;
+	                    _context.next = 14;
 	                    break;
 
 	                case 9:
@@ -48718,21 +49001,23 @@
 	                    _context.t0 = _context['catch'](0);
 
 	                    console.error('Sagas error with turning on server', _context.t0);
+	                    _context.next = 14;
+	                    return (0, _effects.put)({ type: _server_controller2.MC_SERVER_ERRORED, payload: true });
 
-	                case 12:
-	                    _context.prev = 12;
-	                    _context.next = 15;
-	                    return (0, _effects.call)(_server_controller2.serverPending, false);
+	                case 14:
+	                    _context.prev = 14;
+	                    _context.next = 17;
+	                    return (0, _effects.put)({ type: _server_controller2.MC_SERVER_PENDING, payload: false });
 
-	                case 15:
-	                    return _context.finish(12);
+	                case 17:
+	                    return _context.finish(14);
 
-	                case 16:
+	                case 18:
 	                case 'end':
 	                    return _context.stop();
 	            }
 	        }
-	    }, _marked, this, [[0, 9, 12, 16]]);
+	    }, _marked, this, [[0, 9, 14, 18]]);
 	}
 
 	function turnOffServerSagas() {
@@ -48743,11 +49028,11 @@
 	                case 0:
 	                    _context2.prev = 0;
 	                    _context2.next = 3;
-	                    return (0, _effects.call)(_server_controller2.serverOff, true);
+	                    return (0, _effects.put)({ type: _server_controller2.MC_SERVER_OFF, payload: false });
 
 	                case 3:
 	                    _context2.next = 5;
-	                    return (0, _effects.call)(_server_controller2.serverOff);
+	                    return (0, _effects.call)(_server_controller.turnServerOff);
 
 	                case 5:
 	                    turnOffRequest = _context2.sent;
@@ -48765,7 +49050,7 @@
 	                case 13:
 	                    _context2.prev = 13;
 	                    _context2.next = 16;
-	                    return (0, _effects.call)(_server_controller2.serverPending, false);
+	                    return (0, _effects.put)({ type: _server_controller2.MC_SERVER_PENDING, payload: false });
 
 	                case 16:
 	                    return _context2.finish(13);
@@ -48800,7 +49085,7 @@
 	}
 
 /***/ }),
-/* 758 */
+/* 760 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48811,7 +49096,7 @@
 	exports.turnServerOn = turnServerOn;
 	exports.turnServerOff = turnServerOff;
 
-	var _axios = __webpack_require__(759);
+	var _axios = __webpack_require__(761);
 
 	var _axios2 = _interopRequireDefault(_axios);
 
@@ -48826,6 +49111,7 @@
 	function turnServerOn() {
 	    var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
+	    console.log('AXIOS TURN SERVER ON HIT!!!');
 	    url += '/api/server_controller/turn_on';
 	    return _axios2.default.put(url).then(function (response) {
 	        if (response.status_code === '200') {
@@ -48855,21 +49141,21 @@
 	}
 
 /***/ }),
-/* 759 */
+/* 761 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(760);
+	module.exports = __webpack_require__(762);
 
 /***/ }),
-/* 760 */
+/* 762 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
-	var bind = __webpack_require__(762);
-	var Axios = __webpack_require__(764);
-	var defaults = __webpack_require__(765);
+	var utils = __webpack_require__(763);
+	var bind = __webpack_require__(764);
+	var Axios = __webpack_require__(766);
+	var defaults = __webpack_require__(767);
 
 	/**
 	 * Create an instance of Axios
@@ -48902,15 +49188,15 @@
 	};
 
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(782);
-	axios.CancelToken = __webpack_require__(783);
-	axios.isCancel = __webpack_require__(779);
+	axios.Cancel = __webpack_require__(784);
+	axios.CancelToken = __webpack_require__(785);
+	axios.isCancel = __webpack_require__(781);
 
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(784);
+	axios.spread = __webpack_require__(786);
 
 	module.exports = axios;
 
@@ -48919,13 +49205,13 @@
 
 
 /***/ }),
-/* 761 */
+/* 763 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bind = __webpack_require__(762);
-	var isBuffer = __webpack_require__(763);
+	var bind = __webpack_require__(764);
+	var isBuffer = __webpack_require__(765);
 
 	/*global toString:true*/
 
@@ -49228,7 +49514,7 @@
 
 
 /***/ }),
-/* 762 */
+/* 764 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -49245,7 +49531,7 @@
 
 
 /***/ }),
-/* 763 */
+/* 765 */
 /***/ (function(module, exports) {
 
 	/*!
@@ -49272,15 +49558,15 @@
 
 
 /***/ }),
-/* 764 */
+/* 766 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(765);
-	var utils = __webpack_require__(761);
-	var InterceptorManager = __webpack_require__(776);
-	var dispatchRequest = __webpack_require__(777);
+	var defaults = __webpack_require__(767);
+	var utils = __webpack_require__(763);
+	var InterceptorManager = __webpack_require__(778);
+	var dispatchRequest = __webpack_require__(779);
 
 	/**
 	 * Create a new instance of Axios
@@ -49357,13 +49643,13 @@
 
 
 /***/ }),
-/* 765 */
+/* 767 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(761);
-	var normalizeHeaderName = __webpack_require__(766);
+	var utils = __webpack_require__(763);
+	var normalizeHeaderName = __webpack_require__(768);
 
 	var DEFAULT_CONTENT_TYPE = {
 	  'Content-Type': 'application/x-www-form-urlencoded'
@@ -49379,10 +49665,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(767);
+	    adapter = __webpack_require__(769);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(767);
+	    adapter = __webpack_require__(769);
 	  }
 	  return adapter;
 	}
@@ -49456,12 +49742,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 766 */
+/* 768 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -49474,18 +49760,18 @@
 
 
 /***/ }),
-/* 767 */
+/* 769 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(761);
-	var settle = __webpack_require__(768);
-	var buildURL = __webpack_require__(771);
-	var parseHeaders = __webpack_require__(772);
-	var isURLSameOrigin = __webpack_require__(773);
-	var createError = __webpack_require__(769);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(774);
+	var utils = __webpack_require__(763);
+	var settle = __webpack_require__(770);
+	var buildURL = __webpack_require__(773);
+	var parseHeaders = __webpack_require__(774);
+	var isURLSameOrigin = __webpack_require__(775);
+	var createError = __webpack_require__(771);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(776);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -49582,7 +49868,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(775);
+	      var cookies = __webpack_require__(777);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -49661,12 +49947,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(331)))
 
 /***/ }),
-/* 768 */
+/* 770 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(769);
+	var createError = __webpack_require__(771);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -49693,12 +49979,12 @@
 
 
 /***/ }),
-/* 769 */
+/* 771 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(770);
+	var enhanceError = __webpack_require__(772);
 
 	/**
 	 * Create an Error with the specified message, config, error code, request and response.
@@ -49717,7 +50003,7 @@
 
 
 /***/ }),
-/* 770 */
+/* 772 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -49744,12 +50030,12 @@
 
 
 /***/ }),
-/* 771 */
+/* 773 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -49818,12 +50104,12 @@
 
 
 /***/ }),
-/* 772 */
+/* 774 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	// Headers whose duplicates are ignored by node
 	// c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -49877,12 +50163,12 @@
 
 
 /***/ }),
-/* 773 */
+/* 775 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -49951,7 +50237,7 @@
 
 
 /***/ }),
-/* 774 */
+/* 776 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -49993,12 +50279,12 @@
 
 
 /***/ }),
-/* 775 */
+/* 777 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -50052,12 +50338,12 @@
 
 
 /***/ }),
-/* 776 */
+/* 778 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -50110,17 +50396,17 @@
 
 
 /***/ }),
-/* 777 */
+/* 779 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
-	var transformData = __webpack_require__(778);
-	var isCancel = __webpack_require__(779);
-	var defaults = __webpack_require__(765);
-	var isAbsoluteURL = __webpack_require__(780);
-	var combineURLs = __webpack_require__(781);
+	var utils = __webpack_require__(763);
+	var transformData = __webpack_require__(780);
+	var isCancel = __webpack_require__(781);
+	var defaults = __webpack_require__(767);
+	var isAbsoluteURL = __webpack_require__(782);
+	var combineURLs = __webpack_require__(783);
 
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -50202,12 +50488,12 @@
 
 
 /***/ }),
-/* 778 */
+/* 780 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(761);
+	var utils = __webpack_require__(763);
 
 	/**
 	 * Transform the data for a request or a response
@@ -50228,7 +50514,7 @@
 
 
 /***/ }),
-/* 779 */
+/* 781 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50239,7 +50525,7 @@
 
 
 /***/ }),
-/* 780 */
+/* 782 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50259,7 +50545,7 @@
 
 
 /***/ }),
-/* 781 */
+/* 783 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50279,7 +50565,7 @@
 
 
 /***/ }),
-/* 782 */
+/* 784 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50304,12 +50590,12 @@
 
 
 /***/ }),
-/* 783 */
+/* 785 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Cancel = __webpack_require__(782);
+	var Cancel = __webpack_require__(784);
 
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -50367,7 +50653,7 @@
 
 
 /***/ }),
-/* 784 */
+/* 786 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50400,7 +50686,7 @@
 
 
 /***/ }),
-/* 785 */
+/* 787 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -50443,6 +50729,7 @@
 	function serverPending() {
 	    var bool = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
 
+	    console.log('server pending is... ', bool);
 	    return {
 	        type: MC_SERVER_PENDING,
 	        payload: bool
@@ -50450,7 +50737,7 @@
 	}
 
 /***/ }),
-/* 786 */
+/* 788 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50461,7 +50748,7 @@
 
 	var _redux = __webpack_require__(492);
 
-	var _index = __webpack_require__(787);
+	var _index = __webpack_require__(789);
 
 	var rootReducer = (0, _redux.combineReducers)({
 	    serverStatus: _index.serverStatusReducers
@@ -50470,7 +50757,7 @@
 	exports.default = rootReducer;
 
 /***/ }),
-/* 787 */
+/* 789 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50480,7 +50767,7 @@
 	});
 	exports.serverStatusReducers = undefined;
 
-	var _server_controller = __webpack_require__(788);
+	var _server_controller = __webpack_require__(790);
 
 	var _server_controller2 = _interopRequireDefault(_server_controller);
 
@@ -50491,7 +50778,7 @@
 	var serverStatusReducers = exports.serverStatusReducers = _server_controller2.default;
 
 /***/ }),
-/* 788 */
+/* 790 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50529,12 +50816,12 @@
 
 	        case _server_controller.MC_SERVER_PENDING:
 	            return _extends({}, state, {
-	                serverErrored: action.payload
+	                serverPending: action.payload
 	            });
 
 	        case _server_controller.MC_SERVER_ERRORED:
 	            return _extends({}, state, {
-	                serverPending: action.payload
+	                serverErrored: action.payload
 	            });
 
 	        default:
@@ -50542,7 +50829,7 @@
 	    }
 	};
 
-	var _server_controller = __webpack_require__(785);
+	var _server_controller = __webpack_require__(787);
 
 	var initState = {
 	    serverOn: false,
@@ -50551,7 +50838,7 @@
 	};
 
 /***/ }),
-/* 789 */
+/* 791 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50563,7 +50850,7 @@
 
 	var _effects = __webpack_require__(539);
 
-	var _server_controller = __webpack_require__(757);
+	var _server_controller = __webpack_require__(759);
 
 	var _marked = /*#__PURE__*/regeneratorRuntime.mark(rootSaga);
 

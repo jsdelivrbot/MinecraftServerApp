@@ -1,7 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { turnOnServer, turnOffServer } from '../http_requests/server_controller'
+import { turnServerOn, turnServerOff } from '../http_requests/server_controller';
 
 import { serverOn, serverOff, serverErrored, serverPending } from '../actions/server_controller';
+import { MC_SERVER_ON, MC_SERVER_OFF, MC_SERVER_PENDING, MC_SERVER_ERRORED } from '../actions/server_controller';
+
 
 export const TURN_ON_MC_SERVER = 'TURN_ON_MC_SERVER_SAGAS';
 export const TURN_OFF_MC_SERVER = 'TURN_OFF_MC_SERVER_SAGAS';
@@ -9,29 +11,30 @@ export const TURN_OFF_MC_SERVER = 'TURN_OFF_MC_SERVER_SAGAS';
 // todo: need to rename to better names...
 export function* turnOnServerSagas(){
     try {
-        yield put(serverPending, true)
-        let turnOnRequest = yield call(serverOn)
+        yield put({type: MC_SERVER_PENDING, payload: true})
+        let turnOnRequest = yield call(turnServerOn)
         console.log('Turning on server... ', turnOnRequest)
 
     } catch (error) {
         console.error('Sagas error with turning on server', error)
+        yield put({type: MC_SERVER_ERRORED, payload: true})
 
     } finally {
-        yield call(serverPending, false)
+        yield put({type: MC_SERVER_PENDING, payload: false})
     }
 }
 
 export function* turnOffServerSagas(){
     try {
-        yield call(serverOff, true)
-        let turnOffRequest = yield call(serverOff)
+        yield put({type: MC_SERVER_OFF, payload: false})
+        let turnOffRequest = yield call(turnServerOff)
 
     } catch (error) {
         console.error('Sagas error with turning on server', error)
         yield put()
 
     } finally {
-        yield call(serverPending, false)
+        yield put({type: MC_SERVER_PENDING, payload: false})
     }
 }
 

@@ -25,13 +25,13 @@ export default function(state=initState, action){
         case MC_SERVER_PENDING:
             return {
                 ...state,
-                serverErrored: action.payload
+                serverPending: action.payload
             };
 
         case MC_SERVER_ERRORED:
             return {
                 ...state,
-                serverPending: action.payload
+                serverErrored: action.payload
             };
 
         default:

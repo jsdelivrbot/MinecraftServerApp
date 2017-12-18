@@ -25,6 +25,7 @@ export function serverErrored(bool=true){
 }
 
 export function serverPending(bool=true){
+    console.log('server pending is... ', bool)
     return {
         type: MC_SERVER_PENDING,
         payload: bool
