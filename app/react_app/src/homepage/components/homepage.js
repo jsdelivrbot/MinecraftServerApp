@@ -14,11 +14,11 @@ const cardStyle = {
 
 class Homepage extends Component {
     constructor(props){
-        super(props)
-        console.log('Homepage props are ', this.props.serverStatus)
+        super(props);
+        console.log('Homepage props are ', this.props.serverStatus);
 
-        this.onMinecraftServerToggle = this.onMinecraftServerToggle.bind(this)
-        this.getServerStatusIcon = this.getServerStatusIcon.bind(this)
+        this.onMinecraftServerToggle = this.onMinecraftServerToggle.bind(this);
+        this.getServerStatusIcon = this.getServerStatusIcon.bind(this);
         this.toggled = false;
         this.toggleStyle = {
             trackStyle: {color: 'red'}
@@ -49,22 +49,24 @@ class Homepage extends Component {
             <div style={{width:'96vw', marginLeft: '2vw', marginTop: '10px'}}>
                 <Card style={cardStyle}>
                     <CardHeader
-                        title="Minecraft Server Status"
-                        style = {{
-
-                        }}
+                        title="Minecraft Server Status Panel"
+                        titleStyle={{fontSize: '18px'}}
                     />
-
-                    <CardActions>
+                    <CardActions
+                        style={{padding:'8px 16px 8px 16px'}}
+                    >
                         // todo: need to update check mark for when server is on... or change it out right. Looks kindof ugly.
                         <div>
-                            Server Status On: {this.getServerStatusIcon(this.props.serverStatus)}
+                            Server Status: {this.getServerStatusIcon(this.props.serverStatus)}
                         </div>
                         <Toggle
                             label="Turn On Server"
                             onToggle={this.onMinecraftServerToggle}
                             trackSwitchedStyle={this.toggleStyle.trackStyle}
                             toggled={this.props.serverOn}
+                            labelPosition='left'
+                            labelStyle={{width: 'fit-content', marginRight: '10px'}}
+                            iconStyle={{marginTop: '1px'}}
                         />
                     </CardActions>
                 </Card>
