@@ -26,9 +26,7 @@
     "mocha": "^2.4.5",
     "react-addons-test-utils": "^0.14.7",
     "webpack": "^1.15.0",
-    "webpack-dev-server": "^1.14.0"
-  },
-  "dependencies": {
+    "webpack-dev-server": "^1.14.0",
     "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-polyfill": "^6.26.0",
@@ -43,6 +41,7 @@
     "redux": "^3.0.4",
     "redux-saga": "^0.16.0"
   },
+  "dependencies": {},
   "bugs": {
     "url": "https://github.com/swestermire/MinecraftServerApp/issues"
   },

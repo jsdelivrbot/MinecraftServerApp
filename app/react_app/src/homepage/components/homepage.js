@@ -26,20 +26,22 @@ class Homepage extends Component {
     }
 
     onMinecraftServerToggle(){
-        let request = this.props.turnOnServer();
-        console.log('new props are', this.props)
+        if (this.props.serverStatus.serverPending){
+            return;
+        } else if (!this.props.serverStatus.serverOn){
+            this.props.turnOnServer();
+        } else if (!this.props.serverStatus.serverOn){
+            this.props.turnOffServer();
+        }
     }
 
     getServerStatusIcon(serverStatus){
-        const check_icon = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 15 15">
-        <path d="M6.61 11.89L3.5 8.78 2.44 9.84 6.61 14l8.95-8.95L14.5 4z"/></svg>`
-
         if (serverStatus.serverOn){
-            return check_icon
+            return 'On'
         } else if (serverStatus.serverPending){
             return "Pending..."
         } else {
-            return 'SERVER OFF'
+            return 'Off'
         }
     }
 
@@ -63,7 +65,7 @@ class Homepage extends Component {
                             label="Turn On Server"
                             onToggle={this.onMinecraftServerToggle}
                             trackSwitchedStyle={this.toggleStyle.trackStyle}
-                            toggled={this.props.serverOn}
+                            toggled={this.props.serverStatus.serverOn}
                             labelPosition='left'
                             labelStyle={{width: 'fit-content', marginRight: '10px'}}
                             iconStyle={{marginTop: '1px'}}
@@ -79,7 +81,7 @@ const mapStateToProps = (state) => {
     return {
         serverStatus: state.serverStatus
     }
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {

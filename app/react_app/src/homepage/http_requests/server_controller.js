@@ -6,16 +6,15 @@ import axios from 'axios';
 
 //todo: Look into spread operations.
 export function turnServerOn(url=''){
-    console.log('AXIOS TURN SERVER ON HIT!!!')
-    url += '/api/server_controller/turn_on'
+    url += '/api/server_controller/turn_on';
     return (
         axios.put(url)
         .then( (response) => {
-            if (response.status_code === '200'){
+            if (response.status_code === 200){
                 return true
             }
             else{
-                console.error('Error when turn on server', response)
+                console.error('Error when turn on server', response);
                 return false
             }
         })
@@ -26,7 +25,7 @@ export function turnServerOn(url=''){
 }
 
 export function turnServerOff(url=''){
-    url += '/api/server_controller/turn_off'
+    url += '/api/server_controller/turn_off';
     return (
         axios.put(url)
         .then( (response) => {

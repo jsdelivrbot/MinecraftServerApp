@@ -11,30 +11,33 @@ export const TURN_OFF_MC_SERVER = 'TURN_OFF_MC_SERVER_SAGAS';
 // todo: need to rename to better names...
 export function* turnOnServerSagas(){
     try {
-        yield put({type: MC_SERVER_PENDING, payload: true})
-        let turnOnRequest = yield call(turnServerOn)
-        console.log('Turning on server... ', turnOnRequest)
+        yield put({type: MC_SERVER_PENDING, payload: true});
+        yield call(turnServerOn);
+        yield put({type: MC_SERVER_ON, payload: true});
+        yield put({type: MC_SERVER_ERRORED, payload: false});
 
     } catch (error) {
-        console.error('Sagas error with turning on server', error)
-        yield put({type: MC_SERVER_ERRORED, payload: true})
+        console.error('Sagas error with turning on server', error);
+        yield put({type: MC_SERVER_ERRORED, payload: true});
 
     } finally {
-        yield put({type: MC_SERVER_PENDING, payload: false})
+        yield put({type: MC_SERVER_PENDING, payload: false});
     }
 }
 
 export function* turnOffServerSagas(){
     try {
-        yield put({type: MC_SERVER_OFF, payload: false})
-        let turnOffRequest = yield call(turnServerOff)
+        yield put({type: MC_SERVER_PENDING, payload: true});
+        yield call(turnServerOff);
+        yield put({type: MC_SERVER_ON, payload: false});
+        yield put({type: MC_SERVER_ERRORED, payload: false});
 
     } catch (error) {
-        console.error('Sagas error with turning on server', error)
-        yield put()
+        console.error('Sagas error with turning on server', error);
+        yield put({type: MC_SERVER_ERRORED, payload: true});
 
     } finally {
-        yield put({type: MC_SERVER_PENDING, payload: false})
+        yield put({type: MC_SERVER_PENDING, payload: false});
     }
 }
 

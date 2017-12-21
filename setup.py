@@ -10,5 +10,6 @@ setup(
         'Flask',
         'gunicorn',
         'virtualenv',
+        'interruptingcow',
     ]
 )

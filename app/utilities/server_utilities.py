@@ -1,24 +1,27 @@
 import shlex
 import subprocess
-import re
 import io
+import random
+import string
 from interruptingcow import timeout
+import time
 
 
 class ServerUtilities(object):
-    MC_SERVER_DIR = '/opt/server/minecraft'
-    SCREEN_NAME = 'minecraft_server'
+    MC_SERVER_DIR = '/opt/minecraft/server'
+    SCREEN_NAME = 'minecraft_server_screen'
     SCREEN_LOG = 'screen_log'
+    LOG_NAME = 'screenlog.0'
     MAX_RUNTIME = 30  # 30 seconds
 
     def __init__(self):
         self._is_on = False
+        self._unique_id = ''
 
     # todo: Update with RAM alottment
     # todo: Print error with log error
     # todo: Make screen commands a decorator
     # todo: Can also probably make a shell command decorator
-    # todo: replace error regex search
     def turn_on(self):
         """
         Approach: Creating an attached terminal screen thru 'screen' functionality and issuing commands.
@@ -30,24 +33,28 @@ class ServerUtilities(object):
         :return: (bool)
         """
         if not self._is_on:
-            # create attached screen
-            self.create_screen()
-
             # turning on server
+            # comment: Super janky, but want to search only applicable log entries so we use
+            # comment: a special process id to show when the output of a command started
+            self._unique_id = ServerUtilities.generate_unique_id(length=32)
+
             command = 'sudo java -jar {mc_server_dir}/minecraft_server.1.12.2.jar nogui'.format(
                 mc_server_dir=ServerUtilities.MC_SERVER_DIR,
             )
-            execute = ServerUtilities.issue_attached_screen_command(cmd=command)
+            execute = ServerUtilities.issue_attached_screen_command(
+                cmd=command,
+                unique_id=self._unique_id,
+            )
 
             # execute returns True if nothing went wrong.  Now get tail of log and find out if screen had any errors
             if execute:
-                log_tail = ServerUtilities.stream_tail_screen_log(num_of_lines=1)
-                # todo: Should remove this regex and put it in to another function ---> search_on_line()
-                # do some regex search for fail value
-                is_success = (not re.match('look for error syntax', log_tail, flags=re.IGNORECASE))
-                if is_success:
-                    self._is_on = True
-                    return True
+                is_execute_success = ServerUtilities.is_execute_success(
+                    success='Done',
+                    error='error',
+                    unique_id=self._unique_id,
+                )
+                self._is_on = is_execute_success
+                return is_execute_success
             else:
                 print 'Error, cannot turn on server.'
         return False
@@ -57,8 +64,21 @@ class ServerUtilities(object):
         Turn off server
         :return: (bool)
         """
-        mc_cmd = 'stop'
-        pass
+        if self._is_on:
+            mc_cmd = 'stop'
+            self._unique_id = ServerUtilities.generate_unique_id(length=32)
+            execute = ServerUtilities.issue_attached_screen_command(mc_cmd, self._unique_id)
+            if execute:
+                is_execute_success = ServerUtilities.is_execute_success(
+                    'Stopping the server',
+                    'Error',
+                    self._unique_id,
+                )
+                self._is_on = (not is_execute_success)
+                return is_execute_success
+            else:
+                print 'Error, cannot turn off server'
+        return False
 
     def who_is_on(self):
         """
@@ -66,6 +86,7 @@ class ServerUtilities(object):
         :return: (list)
         """
         mc_cmd = 'list'
+        self._unique_id = ServerUtilities.generate_unique_id(length=32)
         pass
 
     def is_players(self):
@@ -76,6 +97,7 @@ class ServerUtilities(object):
         :return: (bool)
         """
         mc_cmd = 'list'
+        self._unique_id = ServerUtilities.generate_unique_id(length=32)
         pass
 
     @staticmethod
@@ -83,7 +105,7 @@ class ServerUtilities(object):
         """
         :return:
         """
-        command = 'rm -rf {mc_server_dir}/{screen_log}'.format(
+        command = 'sudo rm -rf {mc_server_dir}/{screen_log}/screenlog.0'.format(
             mc_server_dir=ServerUtilities.MC_SERVER_DIR,
             screen_log=ServerUtilities.SCREEN_LOG,
         )
@@ -97,72 +119,89 @@ class ServerUtilities(object):
         return True
 
     @staticmethod
-    def issue_attached_screen_command(cmd):
+    def issue_attached_screen_command(cmd, unique_id='noID'):
         """
         :param cmd: (str) Sh command
+        :param unique_id: (str) unique id for remote screen command
         :return:
         """
-        screen_command = 'screen -S {screen_name} -X stuff "{cmd}"`echo -ne "\015"`'.format(
+        time.sleep(0.25)
+        screen_command = "screen -S '{screen_name}' -X stuff 'echo {id} && {cmd}'".format(
             screen_name=ServerUtilities.SCREEN_NAME,
             cmd=cmd,
+            id=unique_id
         )
-
         sh_screen_command = shlex.split(screen_command)
-        execute = subprocess.Popen(sh_screen_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        execute = subprocess.Popen(
+            sh_screen_command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=False,
+        )
+        execute.communicate()
+
+        time.sleep(0.25)
+        enter_command = 'screen -S minecraft_server_screen -X stuff "echo -ne {}"'.format('\015')
+        execute = subprocess.Popen(
+            shlex.split(enter_command),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
         stdout, stderr = execute.communicate()
+
         if stderr:
             print 'Error when fetching tail of screen log'
             return False
         return True
 
     @staticmethod
-    def search_on_line():
+    def is_execute_success(success, error, unique_id):
         """
-        Probably need something like this inconjunction to stream_tail_screen_log()
+        Probably need something like this inconjunction to stream_screen_log_by_id()
         :return:
         """
-        return
+        for log_line in ServerUtilities.stream_screen_log_by_id(unique_id):
+            if error in log_line:
+                return False
+            elif success in log_line:
+                return True
+        return False
 
     @staticmethod
-    def stream_tail_screen_log():
+    def stream_screen_log_by_id(success, error, unique_id='noID'):
         """
         Streams tail of log file for a set period of time before timing out.
         :return: Returns
         """
         try:
-            with io.open(file='{mc_server_dir}/{screen_log}'.format(
+            with io.open(file='{mc_server_dir}/{screen_log}/screenlog.0'.format(
                 mc_server_dir=ServerUtilities.MC_SERVER_DIR,
                 screen_log=ServerUtilities.SCREEN_LOG
             ),
                 mode='rt',
-            ) as log, timeout(ServerUtilities.MAX_RUNTIME, exception=RuntimeError) as streaming_timeout:
+            ) as log, timeout(ServerUtilities.MAX_RUNTIME, exception=RuntimeError):
+
+                start_sending = False
                 while True:
-                    # todo: do shit with lines from log.
-                    return True
+                    line = log.readline()
+                    if start_sending and line:
+                        yield line
+                    elif unique_id in line:
+                        start_sending = True
+
         except RuntimeError:
             print('Run time was exceeded.')
-            return False
+            yield False
+
         except Exception as error:
             print('Other error in stream tail screen log', error)
-            return False
+            yield False
 
     @staticmethod
-    def create_screen():
+    def generate_unique_id(length=32):
         """
-        Switches to screen_log dir and then creates screen.
-        Creating a screen with the log param (-L) will create a screenlog.<NUM> at the cwd
-        :return: (bool)
+        :return: Returns super crazy unique process id
         """
-        # super janky, but I'm not finding a way around this
-        command = 'cd {mc_server_dir}/{screen_log} && screen -S {screen_name} -L'.format(
-            mc_server_dir=ServerUtilities.MC_SERVER_DIR,
-            screen_name=ServerUtilities.SCREEN_NAME,
-            screen_log=ServerUtilities.SCREEN_LOG,
-        )
-        sh_command = shlex.split(command)
-        execute = subprocess.Popen(sh_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = execute.communicate()
-        if stderr:
-            print 'Error when creating screen!'
-            return False
-        return True
+        _id = ''.join([random.choice(string.ascii_letters + string.digits) for n in xrange(length)])
+        return _id

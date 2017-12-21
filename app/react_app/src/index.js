@@ -16,8 +16,9 @@ import rootSaga from './sagas/watchers';
 
 const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(sagaMiddleware)(createStore);
-const reduxStore = createStoreWithMiddleware(reducers);
-sagaMiddleware.run(rootSaga)
+let devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+const reduxStore = createStoreWithMiddleware(reducers, devTools);
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={reduxStore}>
