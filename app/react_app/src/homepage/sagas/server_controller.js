@@ -11,10 +11,12 @@ export const TURN_OFF_MC_SERVER = 'TURN_OFF_MC_SERVER_SAGAS';
 // todo: need to rename to better names...
 export function* turnOnServerSagas(){
     try {
-        yield put({type: MC_SERVER_PENDING, payload: true});
-        yield call(turnServerOn);
-        yield put({type: MC_SERVER_ON, payload: true});
         yield put({type: MC_SERVER_ERRORED, payload: false});
+        yield put({type: MC_SERVER_PENDING, payload: true});
+        let request = yield call(turnServerOn);
+        if (request){
+            yield put({type: MC_SERVER_ON, payload: true});
+        }
 
     } catch (error) {
         console.error('Sagas error with turning on server', error);
@@ -27,10 +29,13 @@ export function* turnOnServerSagas(){
 
 export function* turnOffServerSagas(){
     try {
-        yield put({type: MC_SERVER_PENDING, payload: true});
-        yield call(turnServerOff);
-        yield put({type: MC_SERVER_ON, payload: false});
         yield put({type: MC_SERVER_ERRORED, payload: false});
+        yield put({type: MC_SERVER_PENDING, payload: true});
+        let request = yield call(turnServerOff);
+        // todo: need some kindof logic that if turnServerOff is wrong, don't follow through w/ saga
+        if (request){
+            yield put({type: MC_SERVER_ON, payload: false});
+        }
 
     } catch (error) {
         console.error('Sagas error with turning on server', error);

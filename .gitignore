@@ -12,3 +12,4 @@ app/react_app/node_modules
 *.pyc
 *.txt
 bundle*
+node_modules

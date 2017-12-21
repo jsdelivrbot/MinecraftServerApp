@@ -70,9 +70,9 @@ class ServerUtilities(object):
             execute = ServerUtilities.issue_attached_screen_command(mc_cmd, self._unique_id)
             if execute:
                 is_execute_success = ServerUtilities.is_execute_success(
-                    'Stopping the server',
-                    'Error',
-                    self._unique_id,
+                    success='Stopping the server',
+                    error='Error',
+                    unique_id=self._unique_id,
                 )
                 self._is_on = (not is_execute_success)
                 return is_execute_success
@@ -126,14 +126,12 @@ class ServerUtilities(object):
         :return:
         """
         time.sleep(0.25)
-        screen_command = "screen -S '{screen_name}' -X stuff 'echo {id} && {cmd}'".format(
+        screen_id= "screen -S '{screen_name}' -X stuff '{id}'".format(
             screen_name=ServerUtilities.SCREEN_NAME,
-            cmd=cmd,
             id=unique_id
         )
-        sh_screen_command = shlex.split(screen_command)
         execute = subprocess.Popen(
-            sh_screen_command,
+            shlex.split(screen_id),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             shell=False,
@@ -141,7 +139,35 @@ class ServerUtilities(object):
         execute.communicate()
 
         time.sleep(0.25)
-        enter_command = 'screen -S minecraft_server_screen -X stuff "echo -ne {}"'.format('\015')
+        enter_command = 'screen -S "{screen_name}" -X stuff "{enter}"'.format(
+            screen_name=ServerUtilities.SCREEN_NAME,
+            enter='\015',
+        )
+        execute = subprocess.Popen(
+            shlex.split(enter_command),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        execute.communicate()
+
+        time.sleep(0.25)
+        screen_command = "screen -S '{screen_name}' -X stuff '{cmd}'".format(
+            screen_name=ServerUtilities.SCREEN_NAME,
+            cmd=cmd,
+        )
+        execute = subprocess.Popen(
+            shlex.split(screen_command),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=False,
+        )
+        execute.communicate()
+
+        enter_command = 'screen -S "{screen_name}" -X stuff "{enter}"'.format(
+            screen_name=ServerUtilities.SCREEN_NAME,
+            enter='\015',
+        )
         execute = subprocess.Popen(
             shlex.split(enter_command),
             shell=False,
@@ -161,10 +187,10 @@ class ServerUtilities(object):
         Probably need something like this inconjunction to stream_screen_log_by_id()
         :return:
         """
-        for log_line in ServerUtilities.stream_screen_log_by_id(unique_id):
-            if error in log_line:
+        for log_line in ServerUtilities.stream_screen_log_by_id(success, error, unique_id):
+            if type(log_line) == str and error in log_line:
                 return False
-            elif success in log_line:
+            elif type(log_line) == str and success in log_line:
                 return True
         return False
 

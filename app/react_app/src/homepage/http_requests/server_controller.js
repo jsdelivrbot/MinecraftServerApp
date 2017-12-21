@@ -10,7 +10,7 @@ export function turnServerOn(url=''){
     return (
         axios.put(url)
         .then( (response) => {
-            if (response.status_code === 200){
+            if (response.status === 200){
                 return true
             }
             else{
@@ -29,7 +29,7 @@ export function turnServerOff(url=''){
     return (
         axios.put(url)
         .then( (response) => {
-            if (response.status_code === '200'){
+            if (response.status === 200){
                 return true
             }
             else{

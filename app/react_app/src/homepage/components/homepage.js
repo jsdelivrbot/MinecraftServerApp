@@ -30,7 +30,7 @@ class Homepage extends Component {
             return;
         } else if (!this.props.serverStatus.serverOn){
             this.props.turnOnServer();
-        } else if (!this.props.serverStatus.serverOn){
+        } else if (this.props.serverStatus.serverOn){
             this.props.turnOffServer();
         }
     }
