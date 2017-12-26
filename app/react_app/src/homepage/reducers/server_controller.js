@@ -5,8 +5,8 @@ import { MC_SERVER_OFF, MC_SERVER_ON, MC_SERVER_PENDING, MC_SERVER_ERRORED } fro
 const initState = {
     serverOn: false,
     serverErrored: false,
-    serverPending: false,
-}
+    serverPending: true,
+};
 
 export default function(state=initState, action){
     switch(action.type){

@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LinearProgress from 'material-ui/LinearProgress';
+import Snackbar from 'material-ui/Snackbar';
 
 //todo: Have shareable component for Server card status
 import { Card, CardActions, CardHeader, CardTitle } from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
-import { turnOnServerSagas } from '../sagas/server_controller';
-import { TURN_ON_MC_SERVER, TURN_OFF_MC_SERVER } from '../sagas/server_controller';
+import { TURN_ON_MC_SERVER, TURN_OFF_MC_SERVER, IS_SERVER_ON } from '../sagas/server_controller';
+// import { WorldMap } from './world_map';
 
 const cardStyle = {
     width: "100%",
-}
+};
 
 class Homepage extends Component {
     constructor(props){
         super(props);
-        console.log('Homepage props are ', this.props.serverStatus);
-
         this.onMinecraftServerToggle = this.onMinecraftServerToggle.bind(this);
         this.getServerStatusIcon = this.getServerStatusIcon.bind(this);
-        this.toggled = false;
+        this.getServerPendingMessage = this.getServerPendingMessage.bind(this);
         this.toggleStyle = {
             trackStyle: {color: 'red'}
-        }
+        };
+        this.state = {
+          pending: true,
+        };
+    }
+
+    componentDidMount(){
+        this.props.isServerOn();
+        this.setState({
+            pending: false
+        })
     }
 
     onMinecraftServerToggle(){
@@ -43,6 +52,12 @@ class Homepage extends Component {
         } else {
             return 'Off'
         }
+    }
+
+    getServerPendingMessage(){
+        return (
+            <LinearProgress mode="indeterminate" />
+        );
     }
 
     render(){
@@ -72,6 +87,15 @@ class Homepage extends Component {
                         />
                     </CardActions>
                 </Card>
+                <Snackbar
+                    open={this.state.pending}
+                    message={this.getServerPendingMessage()}
+                    autoHideDuration={30000}
+                    bodyStyle={{
+                        backgroundColor: '#0097a724',
+                        padding: "25px 25px 25px 25px"
+                    }}
+                />
             </div>
         )
     }
@@ -90,8 +114,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         turnOffServer: () => {
             dispatch({type: TURN_OFF_MC_SERVER})
+        },
+        isServerOn: () => {
+            dispatch({type: IS_SERVER_ON})
         }
+
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Homepage);

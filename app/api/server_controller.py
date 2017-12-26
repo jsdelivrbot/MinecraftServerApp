@@ -30,3 +30,13 @@ def who_is_on():
 def is_players():
     response = server_utilities.is_players()
     return Response(jsonify(response), 200)
+
+
+@app.route('/api/server_controller/is_on', methods=['GET'])
+def is_on():
+    try:
+        response = server_utilities.is_on()
+        return Response('{}'.format(response), 200)
+    except Exception as error:
+        print('ERROR!, {}'.format(error))
+        return Response(404)

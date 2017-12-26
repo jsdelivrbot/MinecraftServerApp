@@ -5,6 +5,7 @@ import random
 import string
 from interruptingcow import timeout
 import time
+import socket
 
 
 class ServerUtilities(object):
@@ -15,7 +16,7 @@ class ServerUtilities(object):
     MAX_RUNTIME = 30  # 30 seconds
 
     def __init__(self):
-        self._is_on = False
+        self._is_on = ServerUtilities.is_on()
         self._unique_id = ''
 
     # todo: Update with RAM alottment
@@ -78,6 +79,25 @@ class ServerUtilities(object):
                 return is_execute_success
             else:
                 print 'Error, cannot turn off server'
+        return False
+
+    @staticmethod
+    def is_on():
+        """
+        Returns bools indicating if server is on or off
+        :return: (bool)
+        """
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.bind(("127.0.0.1", 25565))
+        except socket.error as error:
+            if error.errno == 48:
+                print 'error is {}'.format(error)
+                return True
+            else:
+                print('Error when checking socket, error: {}'.format(error))
+                return False
+        s.close()
         return False
 
     def who_is_on(self):

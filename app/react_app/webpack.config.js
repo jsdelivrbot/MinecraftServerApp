@@ -22,7 +22,12 @@ module.exports = {
           test: /\.js$/,
           exclude: /node_modules/,
           loader : 'babel-loader',
-        }
+        },
+        {
+          test: /\.(png|jpg|gif)$/,
+          loader: "url-loader?name=react_app/images/[name].[ext]",
+        },
+
     ]
   },
   resolve: {
