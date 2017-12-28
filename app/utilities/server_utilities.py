@@ -87,18 +87,20 @@ class ServerUtilities(object):
         Returns bools indicating if server is on or off
         :return: (bool)
         """
+        response = False
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.bind(("127.0.0.1", 25565))
+
         except socket.error as error:
-            if error.errno == 48:
+            if error.errno == 98:
                 print 'error is {}'.format(error)
-                return True
+                response = True
             else:
                 print('Error when checking socket, error: {}'.format(error))
-                return False
+
         s.close()
-        return False
+        return response
 
     def who_is_on(self):
         """
@@ -208,9 +210,9 @@ class ServerUtilities(object):
         :return:
         """
         for log_line in ServerUtilities.stream_screen_log_by_id(success, error, unique_id):
-            if type(log_line) == str and error in log_line:
+            if error in log_line:
                 return False
-            elif type(log_line) == str and success in log_line:
+            elif success in log_line:
                 return True
         return False
 

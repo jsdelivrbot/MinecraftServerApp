@@ -7,8 +7,9 @@ from app.utilities import server_utilities
 @app.route('/api/server_controller/turn_on', methods=['PUT'])
 def turn_on():
     response = server_utilities.turn_on()
+    print 'response is ... {}'.format(response)
     if response:
-        return Response('Server is on.', 200)
+        return Response('{}'.format(True), 200)
     return Response('Server is either already on or errored.', 404)
 
 
@@ -16,7 +17,7 @@ def turn_on():
 def turn_off():
     response = server_utilities.turn_off()
     if response:
-        return Response('Server is off', 200)
+        return Response('{}'.format(True), 200)
     return Response('Server is either already off or errored', 404)
 
 

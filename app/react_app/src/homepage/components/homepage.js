@@ -18,28 +18,22 @@ class Homepage extends Component {
         super(props);
         this.onMinecraftServerToggle = this.onMinecraftServerToggle.bind(this);
         this.getServerStatusIcon = this.getServerStatusIcon.bind(this);
-        this.getServerPendingMessage = this.getServerPendingMessage.bind(this);
+        this.getProgressBar = this.getProgressBar.bind(this);
         this.toggleStyle = {
             trackStyle: {color: 'red'}
         };
-        this.state = {
-          pending: true,
-        };
+        this.showProgress = false;
     }
 
     componentDidMount(){
         this.props.isServerOn();
-        this.setState({
-            pending: false
-        })
     }
 
     onMinecraftServerToggle(){
-        if (this.props.serverStatus.serverPending){
-            return;
-        } else if (!this.props.serverStatus.serverOn){
+        this.showProgress= true;
+        if (!this.props.serverStatus.serverPending && !this.props.serverStatus.serverOn){
             this.props.turnOnServer();
-        } else if (this.props.serverStatus.serverOn){
+        } else if (!this.props.serverStatus.serverPending && this.props.serverStatus.serverOn){
             this.props.turnOffServer();
         }
     }
@@ -54,7 +48,7 @@ class Homepage extends Component {
         }
     }
 
-    getServerPendingMessage(){
+    getProgressBar(){
         return (
             <LinearProgress mode="indeterminate" />
         );
@@ -88,9 +82,9 @@ class Homepage extends Component {
                     </CardActions>
                 </Card>
                 <Snackbar
-                    open={this.state.pending}
-                    message={this.getServerPendingMessage()}
-                    autoHideDuration={30000}
+                    open={(this.props.serverStatus.serverPending && this.showProgress)}
+                    message={this.getProgressBar()}
+                    autoHideDuration={5000}
                     bodyStyle={{
                         backgroundColor: '#0097a724',
                         padding: "25px 25px 25px 25px"

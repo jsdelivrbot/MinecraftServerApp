@@ -29,7 +29,7 @@ export function turnServerOff(url=''){
         axios.put(url)
         .then( (response) => {
             if (response.status === 200){
-                return true
+                return (response.data === 'True')
             }
             else{
                 console.error('Error when turning on server', response);
