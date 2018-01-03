@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { turnServerOn, turnServerOff, isServerOn } from '../http_requests/server_controller';
 
 import { serverOn, serverOff, serverErrored, serverPending } from '../actions/server_controller';
-import { MC_SERVER_ON, MC_SERVER_OFF, MC_SERVER_PENDING, MC_SERVER_ERRORED } from '../actions/server_controller';
+import { MC_SERVER_ON, MC_SERVER_PENDING, MC_SERVER_ERRORED } from '../actions/server_controller';
 
 
 export const TURN_ON_MC_SERVER = 'TURN_ON_MC_SERVER_SAGAS';

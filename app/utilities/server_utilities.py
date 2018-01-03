@@ -139,7 +139,7 @@ class ServerUtilities(object):
             print 'screen log cleanup error'
             return False
         return True
-
+    # screen -r "minecraft_server_screen" -X stuff "echo hello"`echo -ne "\015"`
     @staticmethod
     def issue_attached_screen_command(cmd, unique_id='noID'):
         """
@@ -148,7 +148,7 @@ class ServerUtilities(object):
         :return:
         """
         time.sleep(0.25)
-        screen_id= "screen -S '{screen_name}' -X stuff '{id}'".format(
+        screen_id= "screen -r '{screen_name}' -X stuff '{id}'".format(
             screen_name=ServerUtilities.SCREEN_NAME,
             id=unique_id
         )
@@ -161,7 +161,7 @@ class ServerUtilities(object):
         execute.communicate()
 
         time.sleep(0.25)
-        enter_command = 'screen -S "{screen_name}" -X stuff "{enter}"'.format(
+        enter_command = 'screen -r "{screen_name}" -X stuff "{enter}"'.format(
             screen_name=ServerUtilities.SCREEN_NAME,
             enter='\015',
         )
@@ -174,7 +174,7 @@ class ServerUtilities(object):
         execute.communicate()
 
         time.sleep(0.25)
-        screen_command = "screen -S '{screen_name}' -X stuff '{cmd}'".format(
+        screen_command = "screen -r '{screen_name}' -X stuff '{cmd}'".format(
             screen_name=ServerUtilities.SCREEN_NAME,
             cmd=cmd,
         )
@@ -186,7 +186,7 @@ class ServerUtilities(object):
         )
         execute.communicate()
 
-        enter_command = 'screen -S "{screen_name}" -X stuff "{enter}"'.format(
+        enter_command = 'screen -r "{screen_name}" -X stuff "{enter}"'.format(
             screen_name=ServerUtilities.SCREEN_NAME,
             enter='\015',
         )

@@ -1,7 +1,7 @@
 export const MC_SERVER_ON = 'MC_SERVER_ON';
-export const MC_SERVER_OFF = 'MC_SERVER_OFF';
 export const MC_SERVER_PENDING = 'MC_SERVER_PENDING';
 export const MC_SERVER_ERRORED = 'MC_SERVER_ERRORED';
+export const SET_PLAYERS_ONLINE = 'SET_PLAYERS_ONLINE';
 
 export function serverOn(){
     return {
@@ -12,7 +12,7 @@ export function serverOn(){
 
 export function serverOff(){
     return {
-        type: MC_SERVER_OFF,
+        type: MC_SERVER_ON,
         payload: false
     }
 }
@@ -25,7 +25,6 @@ export function serverErrored(bool=true){
 }
 
 export function serverPending(bool=true){
-    console.log('server pending is... ', bool)
     return {
         type: MC_SERVER_PENDING,
         payload: bool
